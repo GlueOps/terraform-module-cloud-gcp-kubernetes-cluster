@@ -216,7 +216,11 @@ resource "google_container_node_pool" "name" {
     auto_upgrade = true
     auto_repair  = true
   }
-
+  
+  network_config {
+    pod_range = "kubernetes-pods" 
+  }
+  
   node_config {
     spot         = true
     machine_type = "e2-medium"
