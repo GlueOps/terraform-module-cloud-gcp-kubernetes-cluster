@@ -19,10 +19,10 @@ variable "network_ranges" {
   description = "CIDR ranges to use for the cluster deployment."
 }
 
-provider "google" {
-  project = var.project_id
-  region  = var.region
-}
+# provider "google" {
+#   project = var.project_id
+#   region  = var.region
+# }
 
 
 
