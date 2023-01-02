@@ -3,7 +3,7 @@
 
 This Terraform module deploys everything you need in GCP to get a kubernetes cluster up and running. This repo should be used in the context of deploying with an [admiral](https://github.com/glueops/admiral)
 
-## Prequisites
+## Prerequisites
 
 ### Project Setup
 
