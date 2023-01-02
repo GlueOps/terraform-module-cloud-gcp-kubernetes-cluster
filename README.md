@@ -30,13 +30,15 @@ This Terraform module deploys everything you need in GCP to get a kubernetes clu
 
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_google"></a> [google](#requirement\_google) | 4.47.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | n/a |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.47.0 |
 
 ## Modules
 
@@ -46,16 +48,16 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [google_compute_network.vpc_network](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_network) | resource |
-| [google_compute_route.default](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_route) | resource |
-| [google_compute_router.router](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_router) | resource |
-| [google_compute_subnetwork.kubernetes](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_subnetwork) | resource |
-| [google_container_cluster.gke](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster) | resource |
-| [google_container_node_pool.name](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_node_pool) | resource |
-| [google_project_iam_member.gke-project-roles](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
-| [google_project_service.activate_apis](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_service) | resource |
-| [google_service_account.gke_node_pool](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
-| [google_project.project](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project) | data source |
+| [google_compute_network.vpc_network](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/compute_network) | resource |
+| [google_compute_route.default](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/compute_route) | resource |
+| [google_compute_router.router](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/compute_router) | resource |
+| [google_compute_subnetwork.kubernetes](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/compute_subnetwork) | resource |
+| [google_container_cluster.gke](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/container_cluster) | resource |
+| [google_container_node_pool.name](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/container_node_pool) | resource |
+| [google_project_iam_member.gke-project-roles](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/project_iam_member) | resource |
+| [google_project_service.activate_apis](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/project_service) | resource |
+| [google_service_account.gke_node_pool](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/service_account) | resource |
+| [google_project.project](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/data-sources/project) | data source |
 
 ## Inputs
 
