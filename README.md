@@ -19,11 +19,11 @@ This Terraform module deploys everything you need in GCP to get a kubernetes clu
 
 1. Create a service account and download the json key file, save the file as `creds.json`
 
-2. Set env variable:
+2. Set env variable while in the directory with the `creds.json`:
 
     ```bash
 
-    export GOOGLE_APPLICATION_CREDENTIALS=creds.json
+    export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/creds.json
     ```
 
 3. In the project, give the service account the `Owner` role.
