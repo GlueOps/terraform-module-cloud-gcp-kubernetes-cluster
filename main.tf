@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = "4.47.0"
+    }
+  }
+}
 
 variable "region" {
   default     = "us-central1"
@@ -19,10 +27,10 @@ variable "network_ranges" {
   description = "CIDR ranges to use for the cluster deployment."
 }
 
-# provider "google" {
-#   project = var.project_id
-#   region  = var.region
-# }
+provider "google" {
+  project = var.project_id
+  region  = var.region
+}
 
 
 
