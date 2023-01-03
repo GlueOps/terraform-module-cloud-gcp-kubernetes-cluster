@@ -144,11 +144,13 @@ resource "google_project_iam_member" "gke-project-roles" {
   role    = each.value
 }
 
-
-# module.service-account.google_service_account.service_accounts["gke-svc-acct"] will be created
 resource "google_service_account" "gke_node_pool" {
   account_id   = "gke-svc-acct"
   display_name = "Terraform-managed service account"
+  
+  depends_on = [
+    google_project_service.activate_apis,
+  ]
 }
 
 resource "google_container_cluster" "gke" {
