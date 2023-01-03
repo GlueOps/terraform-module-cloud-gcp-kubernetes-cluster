@@ -7,9 +7,12 @@ This Terraform module deploys everything you need in GCP to get a kubernetes clu
 
 ### Project Setup
 
-1. A **new** GCP Project with the `cloudresourcemanager.googleapis.com` enabled.
+1. Create a **new** GCP Project with the following APIs enabled:
 
-   * Example for a project called [glueops-test-1](https://console.developers.google.com/apis/api/cloudresourcemanager.googleapis.com/overview?project=glueops-test-1)
+```
+cloudresourcemanager.googleapis.com
+compute.googleapis.com
+```
 
 2. Service Quota increase: `In-use IP addresses (default is 8)`. Have this increased to 64. \_Note: this increase should be immediate, otherwise contact GCP support/account maangement\_
 
@@ -53,7 +56,7 @@ No modules.
 | [google_compute_router.router](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/compute_router) | resource |
 | [google_compute_subnetwork.kubernetes](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/compute_subnetwork) | resource |
 | [google_container_cluster.gke](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/container_cluster) | resource |
-| [google_container_node_pool.name](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/container_node_pool) | resource |
+| [google_container_node_pool.primary](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/container_node_pool) | resource |
 | [google_project_iam_member.gke-project-roles](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/project_iam_member) | resource |
 | [google_project_service.activate_apis](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/project_service) | resource |
 | [google_service_account.gke_node_pool](https://registry.terraform.io/providers/hashicorp/google/4.47.0/docs/resources/service_account) | resource |
