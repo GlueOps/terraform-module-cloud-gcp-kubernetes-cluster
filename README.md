@@ -31,6 +31,20 @@ compute.googleapis.com
 
 3. In the project, give the service account the `Owner` role.
 
+4. Example configuration for this module:
+
+```hcl
+kubernetes_cluster_configurations = {
+  network_ranges = {
+    "kubernetes_pods" : "10.65.0.0/16",
+    "kubernetes_services" : "10.64.224.0/20",
+    "kubernetes_nodes" : "10.64.64.0/23"
+  }
+  project_id = "glueops-demo-1"
+  region     = "us-central1"
+}
+```
+
 ## Requirements
 
 | Name | Version |
@@ -66,7 +80,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_network_ranges"></a> [network\_ranges](#input\_network\_ranges) | CIDR ranges to use for the cluster deployment. | `map(string)` | <pre>{<br>  "kubernetes_pods": "10.65.0.0/16",<br>  "kubernetes_services": "10.64.224.0/20",<br>  "public_primary": "10.64.64.0/23"<br>}</pre> | no |
+| <a name="input_network_ranges"></a> [network\_ranges](#input\_network\_ranges) | CIDR ranges to use for the cluster deployment. | `map(string)` | <pre>{<br>  "kubernetes_nodes": "10.64.64.0/23",<br>  "kubernetes_pods": "10.65.0.0/16",<br>  "kubernetes_services": "10.64.224.0/20"<br>}</pre> | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | project id to deploy the cluster in | `any` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | region to deploy the cluster in | `string` | `"us-central1"` | no |
 

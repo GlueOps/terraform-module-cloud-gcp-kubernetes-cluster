@@ -22,7 +22,7 @@ variable "network_ranges" {
   default = {
     kubernetes_pods     = "10.65.0.0/16"
     kubernetes_services = "10.64.224.0/20"
-    public_primary      = "10.64.64.0/23"
+    kubernetes_nodes    = "10.64.64.0/23"
   }
   description = "CIDR ranges to use for the cluster deployment."
 }
@@ -104,7 +104,7 @@ resource "google_compute_route" "default" {
 resource "google_compute_subnetwork" "kubernetes" {
   name                     = "public-subnet"
   description              = "Public Subnetwork"
-  ip_cidr_range            = var.network_ranges["public_primary"]
+  ip_cidr_range            = var.network_ranges["kubernetes_nodes"]
   region                   = var.region
   network                  = google_compute_network.vpc_network.id
   private_ip_google_access = true
