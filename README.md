@@ -40,7 +40,7 @@ kubernetes_cluster_configurations = {
     "kubernetes_services" : "10.64.224.0/20",
     "kubernetes_nodes" : "10.64.64.0/23"
   }
-  project_id = "venkata-test-2"
+  project_id = "glueops-demo-1"
   region     = "us-central1"
 }
 ```
