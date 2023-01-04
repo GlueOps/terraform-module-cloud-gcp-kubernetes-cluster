@@ -26,7 +26,7 @@ compute.googleapis.com
 
     ```bash
 
-    export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/creds.json
+    export GOOGLE_CREDENTIALS=$(pwd)/creds.json
     ```
 
 3. In the project, give the service account the `Owner` role.
