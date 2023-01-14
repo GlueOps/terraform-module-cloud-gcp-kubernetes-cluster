@@ -18,7 +18,7 @@ Edit the quota for `In-use IP addresses` in the [quota page](https://console.clo
 
 ```bash
 gcloud alpha services quota update \
-    --service=compute.googleapis.com --consumer=projects/antoniostacos-gcp-nonprod \
+    --service=compute.googleapis.com --consumer=projects/<your-project-name> \
     --metric=compute.googleapis.com/global_in_use_addresses \
     --unit=1/{project} --value=64
 ```
