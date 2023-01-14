@@ -16,7 +16,6 @@ variable "project_id" {
   description = "project id to deploy the cluster in"
 }
 
-// create a variable for the network prefixes
 variable "network_ranges" {
   type = map(string)
   default = {
@@ -25,6 +24,22 @@ variable "network_ranges" {
     kubernetes_nodes    = "10.64.64.0/23"
   }
   description = "CIDR ranges to use for the cluster deployment."
+}
+
+variable "gke_initial_node_count" {
+  type        = number
+  default     = 1
+  description = "Initial node count for Kubernetes."
+}
+
+variable "node_config" {
+  type = map(string)
+  default = {
+    machine_type = "e2-medium"
+    disk_type    = "pd-ssd"
+    disk_size_gb = "20"
+  }
+  description = "Configuration for GKE nodes."
 }
 
 provider "google" {
@@ -147,7 +162,7 @@ resource "google_project_iam_member" "gke-project-roles" {
 resource "google_service_account" "gke_node_pool" {
   account_id   = "gke-svc-acct"
   display_name = "Terraform-managed service account"
-  
+
   depends_on = [
     google_project_service.activate_apis,
   ]
@@ -159,7 +174,7 @@ resource "google_container_cluster" "gke" {
   location                    = var.region
   min_master_version          = "1.22.15-gke.100"
   remove_default_node_pool    = true
-  initial_node_count          = 1
+  initial_node_count          = var.gke_initial_node_count
   enable_intranode_visibility = true
 
   release_channel {
@@ -221,11 +236,10 @@ resource "google_container_node_pool" "primary" {
   }
 
   node_config {
-    spot         = true
-    machine_type = "e2-medium"
-    disk_type    = "pd-ssd"
-    disk_size_gb = "20"
-
+    spot            = true
+    machine_type    = var.node_config.machine_type
+    disk_type       = var.node_config.disk_type
+    disk_size_gb    = var.node_config.disk_size_gb
     service_account = google_service_account.gke_node_pool.email
   }
 }
