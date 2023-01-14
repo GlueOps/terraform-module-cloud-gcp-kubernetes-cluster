@@ -27,8 +27,8 @@ variable "network_ranges" {
 }
 
 variable "gke_initial_node_count" {
-  type    = number
-  default = 1
+  type        = number
+  default     = 1
   description = "Initial node count for Kubernetes."
 }
 
@@ -39,7 +39,7 @@ variable "node_config" {
     disk_type    = "pd-ssd"
     disk_size_gb = "20"
   }
-  description = "Configuration for GKE nodes.
+  description = "Configuration for GKE nodes."
 }
 
 provider "google" {
