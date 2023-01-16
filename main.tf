@@ -26,10 +26,10 @@ variable "network_ranges" {
   description = "CIDR ranges to use for the cluster deployment."
 }
 
-variable "gke_initial_node_count" {
+variable "gke_initial_node_pool_node_count" {
   type        = number
   default     = 1
-  description = "Initial node count for Kubernetes."
+  description = "Initial node count for the Kubernetes node pool."
 }
 
 variable "node_config" {
@@ -174,7 +174,7 @@ resource "google_container_cluster" "gke" {
   location                    = var.region
   min_master_version          = "1.22.16-gke.2000"
   remove_default_node_pool    = true
-  initial_node_count          = var.gke_initial_node_count
+  initial_node_count          = 1
   enable_intranode_visibility = true
 
   release_channel {
@@ -228,7 +228,7 @@ resource "google_container_node_pool" "primary" {
 
   }
 
-  initial_node_count = 1
+  initial_node_count = var.gke_initial_node_pool_node_count
 
   management {
     auto_upgrade = true
