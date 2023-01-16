@@ -101,7 +101,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_gke_initial_node_count"></a> [gke\_initial\_node\_count](#input\_gke\_initial\_node\_count) | Initial node count for Kubernetes. | `number` | `1` | no |
+| <a name="input_gke_initial_node_pool_node_count"></a> [gke\_initial\_node\_pool\_node\_count](#input\_gke\_initial\_node\_pool\_node\_count) | Initial node count for the Kubernetes node pool. | `number` | `1` | no |
 | <a name="input_network_ranges"></a> [network\_ranges](#input\_network\_ranges) | CIDR ranges to use for the cluster deployment. | `map(string)` | <pre>{<br>  "kubernetes_nodes": "10.64.64.0/23",<br>  "kubernetes_pods": "10.65.0.0/16",<br>  "kubernetes_services": "10.64.224.0/20"<br>}</pre> | no |
 | <a name="input_node_config"></a> [node\_config](#input\_node\_config) | Configuration for GKE nodes. | `map(string)` | <pre>{<br>  "disk_size_gb": "20",<br>  "disk_type": "pd-ssd",<br>  "machine_type": "e2-medium"<br>}</pre> | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | project id to deploy the cluster in | `any` | n/a | yes |
