@@ -172,7 +172,7 @@ resource "google_container_cluster" "gke" {
   name = "gke"
 
   location                    = var.region
-  min_master_version          = "1.22.15-gke.100"
+  min_master_version          = "1.22.17-gke.1900"
   remove_default_node_pool    = true
   initial_node_count          = var.gke_initial_node_count
   enable_intranode_visibility = true
