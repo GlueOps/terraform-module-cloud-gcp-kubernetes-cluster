@@ -21,13 +21,13 @@ gcloud config set project <unique-project-id>
 gcloud alpha billing projects link <unique-project-id> --billing-account=$(gcloud alpha billing accounts list --format=json | jq '.[]."name"'  | tr -d '"' | awk -F'/' '{ print $2}')
 ```
 
-2. Enable the APIs required by the deployment: [`cloudresourcemanager.googleapis.com`, `compute.googleapis.com`].
+3. Enable the APIs required by the deployment: [`cloudresourcemanager.googleapis.com`, `compute.googleapis.com`].
 
 ```bash
 gcloud services enable cloudresourcemanager.googleapis.com compute.googleapis.com
 ```
 
-3. Service Quota increase: `In-use IP addresses (default is 8)` has too low of a default value for deploying a Kubernetes beyond 3 nodes and quota should be increased to 64 to create headroom in available IPs.
+4. Service Quota increase: `In-use IP addresses (default is 8)` has too low of a default value for deploying a Kubernetes beyond 3 nodes and quota should be increased to 64 to create headroom in available IPs.
 Edit the quota for `In-use IP addresses` in the [quota page](https://console.cloud.google.com/iam-admin/quotas).  Be sure to increase the quota for the region relevant to the new project.
 
 ![Screenshot of Quota Increase](https://user-images.githubusercontent.com/6570292/210277244-f3a75d06-763f-4bdc-805e-4f8bd3c77ad5.png)
