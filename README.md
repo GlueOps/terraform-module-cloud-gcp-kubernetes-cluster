@@ -58,7 +58,7 @@ Download the key file and place it in the root directoy of the new directory cre
     export GOOGLE_CREDENTIALS=$(pwd)/creds.json
     ```
 
-3. In the project, [grant the service account the `Owner` role](https://console.cloud.google.com/iam-admin/iam) by selecting `GRANT ACCESS` at the top of the screen and filling out the principal (service account role) and the `Owner` role.
+3. In the project, [grant the service account the `Owner` role](https://console.cloud.google.com/iam-admin/iam).
 
 ```bash
 gcloud projects add-iam-policy-binding <unique-project-id> \
