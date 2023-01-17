@@ -34,37 +34,35 @@ Edit the quota for `In-use IP addresses` in the [quota page](https://console.clo
 
 ### Service Account
 
-1. [Create a service account](https://console.cloud.google.com/iam-admin/serviceaccounts/create) and [download the json key file](https://console.cloud.google.com/iam-admin/serviceaccounts/details/101612329871957262389/keys), save the file as `creds.json`
+1. [Create a service account](https://console.cloud.google.com/iam-admin/serviceaccounts/create).
 
-Create the service account:
 ```bash
 gcloud iam service-accounts create <service-account-name> \
     --description="<service-account-description>" \
     --display-name="<service-account-display-name>"
 ```
 
-Create the json key file:
-```bash
-gcloud iam service-accounts keys create creds.json \
-    --iam-account=<service-account-name>@<unique-project-id>.iam.gserviceaccount.com
-```
-
-Download the key file and place it in the root directoy of the new directory created for this deployment.
-
-2. Set env variable while in the directory with the `creds.json`:
-
-    ```bash
-
-    export GOOGLE_CREDENTIALS=$(pwd)/creds.json
-    ```
-
-3. In the project, [grant the service account the `Owner` role](https://console.cloud.google.com/iam-admin/iam).
+2. [Grant the service account the `Owner` role](https://console.cloud.google.com/iam-admin/iam).
 
 ```bash
 gcloud projects add-iam-policy-binding <unique-project-id> \
     --member="serviceAccount:<service-account-name>@<unique-project-id>.iam.gserviceaccount.com" \
     --role="roles/owner"
 ```
+
+3. [Download the json key file](https://console.cloud.google.com/iam-admin/serviceaccounts/details/101612329871957262389/keys) and save the file as `creds.json` in the root directoy of the new directory created for this deployment.
+
+```bash
+gcloud iam service-accounts keys create creds.json \
+    --iam-account=<service-account-name>@<unique-project-id>.iam.gserviceaccount.com
+```
+
+4. Set env variable while in the directory with the `creds.json`:
+
+    ```bash
+
+    export GOOGLE_CREDENTIALS=$(pwd)/creds.json
+    ```
 
 ## Terraform Deployment
 
