@@ -80,6 +80,7 @@ kubernetes_cluster_configurations = {
   }
   project_id = "<unique-project-id>"
   region     = "us-central1"
+  zonal = true
 }
 ```
 
