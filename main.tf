@@ -7,6 +7,12 @@ terraform {
   }
 }
 
+// bool variable with true as default
+variable "zonal" {
+  type        = bool
+  description = "Enable if you want this to be a zonal cluster. If true, this will be set to zone a"
+}
+
 variable "region" {
   default     = "us-central1"
   description = "region to deploy the cluster in"
@@ -29,7 +35,7 @@ variable "network_ranges" {
 variable "gke_initial_node_pool_node_count" {
   type        = number
   default     = 1
-  description = "Initial node count for the Kubernetes node pool."
+  description = "Initial node count for the Kubernetes node pool. If zonal is true this is multipled by 3"
 }
 
 variable "node_config" {
@@ -171,7 +177,7 @@ resource "google_service_account" "gke_node_pool" {
 resource "google_container_cluster" "gke" {
   name = "gke"
 
-  location                    = var.region
+  location                    = var.zonal == true ? "${var.region}-a" : var.region
   min_master_version          = "1.22.16-gke.2000"
   remove_default_node_pool    = true
   initial_node_count          = 1
@@ -228,7 +234,7 @@ resource "google_container_node_pool" "primary" {
 
   }
 
-  initial_node_count = var.gke_initial_node_pool_node_count
+  initial_node_count = var.zonal == true ? var.gke_initial_node_pool_node_count * 3 : var.gke_initial_node_pool_node_count
 
   management {
     auto_upgrade = true
