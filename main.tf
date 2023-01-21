@@ -35,7 +35,7 @@ variable "network_ranges" {
 variable "gke_initial_node_pool_node_count" {
   type        = number
   default     = 1
-  description = "Initial node count for the Kubernetes node pool."
+  description = "Initial node count for the Kubernetes node pool. If zonal is true this is multipled by 3"
 }
 
 variable "node_config" {
@@ -234,7 +234,7 @@ resource "google_container_node_pool" "primary" {
 
   }
 
-  initial_node_count = var.gke_initial_node_pool_node_count
+  initial_node_count = var.zonal == true ? var.gke_initial_node_pool_node_count * 3 : var.gke_initial_node_pool_node_count
 
   management {
     auto_upgrade = true
