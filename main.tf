@@ -242,7 +242,7 @@ resource "google_container_node_pool" "primary" {
   }
 
   node_config {
-    spot            = true
+    spot            = var.zonal == true ? true : false
     machine_type    = var.node_config.machine_type
     disk_type       = var.node_config.disk_type
     disk_size_gb    = var.node_config.disk_size_gb
