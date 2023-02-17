@@ -184,7 +184,7 @@ resource "google_container_cluster" "gke" {
   enable_intranode_visibility = true
 
   release_channel {
-    channel = "STABLE"
+    channel = "UNSPECIFIED"
   }
 
   network    = google_compute_network.vpc_network.id
