@@ -2,7 +2,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "4.47.0"
+      version = "4.53.1"
     }
   }
 }
@@ -178,7 +178,7 @@ resource "google_container_cluster" "gke" {
   name = "gke"
 
   location                    = var.zonal == true ? "${var.region}-a" : var.region
-  min_master_version          = "1.22.16-gke.2000"
+  min_master_version          = "1.24.9-gke.1500"
   remove_default_node_pool    = true
   initial_node_count          = 1
   enable_intranode_visibility = true
@@ -231,13 +231,12 @@ resource "google_container_node_pool" "primary" {
   network_config {
     enable_private_nodes = false
     pod_range            = "kubernetes-pods"
-
   }
 
   initial_node_count = var.zonal == true ? var.gke_initial_node_pool_node_count * 3 : var.gke_initial_node_pool_node_count
 
   management {
-    auto_upgrade = true
+    auto_upgrade = false
     auto_repair  = true
   }
 
