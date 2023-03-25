@@ -41,7 +41,7 @@ variable "gke_initial_node_pool_node_count" {
 variable "node_config" {
   type = map(string)
   default = {
-    machine_type = "e2-medium"
+    machine_type = "c2-standard-4"
     disk_type    = "pd-ssd"
     disk_size_gb = "20"
   }
