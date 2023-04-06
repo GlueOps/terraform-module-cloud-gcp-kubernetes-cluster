@@ -224,34 +224,39 @@ resource "google_container_cluster" "gke" {
 
 
 
-resource "google_container_node_pool" "primary" {
-  name = "primary-node-pool"
+# resource "google_container_node_pool" "primary" {
+#   name = "primary-node-pool"
 
-  cluster = google_container_cluster.gke.id
-  network_config {
-    enable_private_nodes = false
-    pod_range            = "kubernetes-pods"
-  }
+#   cluster = google_container_cluster.gke.id
+#   network_config {
+#     enable_private_nodes = false
+#     pod_range            = "kubernetes-pods"
+#   }
 
-  initial_node_count = var.zonal == true ? var.gke_initial_node_pool_node_count * 3 : var.gke_initial_node_pool_node_count
+#   initial_node_count = var.zonal == true ? var.gke_initial_node_pool_node_count * 3 : var.gke_initial_node_pool_node_count
 
-  management {
-    auto_upgrade = false
-    auto_repair  = true
-  }
+#   management {
+#     auto_upgrade = false
+#     auto_repair  = true
+#   }
 
-  node_config {
-    spot            = var.zonal == true ? true : false
-    machine_type    = var.node_config.machine_type
-    disk_type       = var.node_config.disk_type
-    disk_size_gb    = var.node_config.disk_size_gb
-    service_account = google_service_account.gke_node_pool.email
-  }
-}
+#   node_config {
+#     spot            = var.zonal == true ? true : false
+#     machine_type    = var.node_config.machine_type
+#     disk_type       = var.node_config.disk_type
+#     disk_size_gb    = var.node_config.disk_size_gb
+#     service_account = google_service_account.gke_node_pool.email
+#   }
+# }
 
 
 resource "google_container_node_pool" "custom_node_pool" {
   for_each = { for np in var.node_pools : np.name => np }
+
+    network_config {
+    enable_private_nodes = false
+    pod_range            = "kubernetes-pods"
+  }
 
   name    = each.value.name
   cluster = google_container_cluster.gke.id
