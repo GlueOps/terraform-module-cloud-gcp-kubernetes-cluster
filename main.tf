@@ -248,3 +248,42 @@ resource "google_container_node_pool" "primary" {
     service_account = google_service_account.gke_node_pool.email
   }
 }
+
+
+resource "google_container_node_pool" "custom_node_pool" {
+  for_each = { for np in var.node_pools : np.name => np }
+
+  name    = each.value.name
+  cluster = google_container_cluster.gke.id
+
+  initial_node_count = var.zonal == true ? each.value.initial_node_count * 3 : each.value.initial_node_count
+
+  management {
+    auto_upgrade = each.value.auto_upgrade
+    auto_repair  = each.value.auto_repair
+  }
+
+  node_config {
+    spot         = var.zonal == true ? true : false
+    machine_type = each.value.machine_type
+    disk_type    = each.value.disk_type
+    disk_size_gb = each.value.disk_size_gb
+
+    # If you still need the service account, add it as an input variable for the module
+    service_account = google_service_account.gke_node_pool.email
+  }
+}
+
+variable "node_pools" {
+  type = list(object({
+    name               = string
+    initial_node_count = number
+    machine_type       = string
+    disk_type          = string
+    disk_size_gb       = number
+    auto_upgrade       = bool
+    auto_repair        = bool
+  }))
+  description = "A list of objects containing node pool configurations."
+}
+
