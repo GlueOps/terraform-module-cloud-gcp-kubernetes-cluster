@@ -7,6 +7,42 @@ terraform {
   }
 }
 
+
+variable "kubernetes_cluster_configurations" {
+  type = object({
+    network_ranges        = map(string)
+    project_id            = string
+    region                = optional(string)
+    zonal                 = optional(bool)
+    node_pools            = optional(list(any))
+    gke_version           = optional(string)
+    additional_variable_1 = optional(string)
+    additional_variable_2 = optional(string)
+  })
+  default = {
+    network_ranges = {
+      kubernetes_pods     = "10.65.0.0/16"
+      kubernetes_services = "10.64.224.0/20"
+      kubernetes_nodes    = "10.64.64.0/23"
+    }
+    region      = "us-central1"
+    zonal       = true
+    node_pools  = []
+    gke_version = "1.24.10-gke.2300"
+  }
+  description = <<-DESC
+  Kubernetes cluster configurations:
+    - network_ranges (map): CIDR ranges to use for the cluster deployment.
+    - project_id (string): Project ID to deploy the cluster in.
+    - region (string, optional): Region to deploy the cluster in.
+    - zonal (bool, optional): Enable if you want this to be a zonal cluster. If true, this will be set to zone a.
+    - node_pools (list, optional): A list of objects containing node pool configurations.
+    - gke_version (string, optional): Static Channel GKE version to use. This applies only to the master/control plane and not the nodes. Please specify a matching version for the nodes in the node pool definition.
+    - additional_variable_1 (string, optional): Description for additional_variable_1.
+    - additional_variable_2 (string, optional): Description for additional_variable_2.
+  DESC
+}
+
 // bool variable with true as default
 variable "zonal" {
   type        = bool
