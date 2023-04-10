@@ -12,13 +12,13 @@ variable "gke_version" {
 }
 
 variable "region" {
-  type       = string
+  type        = string
   default     = "us-central1"
   description = "region to deploy the cluster in"
 }
 
 variable "project_id" {
-  type       = string
+  type        = string
   description = "project id to deploy the cluster in"
 }
 
@@ -34,31 +34,31 @@ variable "network_ranges" {
 
 variable "node_pools" {
   type = list(object({
-    name               = string
-    initial_node_count = number
-    machine_type       = string
-    disk_type          = string
-    disk_size_gb       = number
-    gke_version        = string
-    spot               = bool
+    name         = string
+    node_count   = number
+    machine_type = string
+    disk_type    = string
+    disk_size_gb = number
+    gke_version  = string
+    spot         = bool
   }))
   default = [{
-    disk_size_gb       = 20
-    disk_type          = "pd-standard"
-    gke_version        = "1.24.10-gke.2300"
-    initial_node_count = 1
-    machine_type       = "e2-medium"
-    name               = "default-pool"
-    spot               = false
+    disk_size_gb = 20
+    disk_type    = "pd-standard"
+    gke_version  = "1.24.10-gke.2300"
+    node_count   = 1
+    machine_type = "e2-medium"
+    name         = "default-pool"
+    spot         = false
   }]
   description = <<-DESC
   node pool configurations:
-    - disk_size_gb (number): Disk size in GB for the nodes.
-    - disk_type (string): Disk type to use for the nodes. ref: https://cloud.google.com/compute/docs/disks
-    - gke_version (string): GKE version to use for the nodes. ref: https://cloud.google.com/kubernetes-engine/docs/release-notes
-    - initial_node_count (number): number of nodes to create in the node pool.
-    - machine_type (string): Machine type to use for the nodes. ref: https://gcpinstances.doit-intl.com/
     - name (string): Name of the node pool. MUST BE UNIQUE! Recommended to use YYYYMMDD in the name
+    - node_count (number): number of nodes to create in the node pool.
+    - machine_type (string): Machine type to use for the nodes. ref: https://gcpinstances.doit-intl.com/
+    - disk_type (string): Disk type to use for the nodes. ref: https://cloud.google.com/compute/docs/disks
+    - disk_size_gb (number): Disk size in GB for the nodes.
+    - gke_version (string): GKE version to use for the nodes. ref: https://cloud.google.com/kubernetes-engine/docs/release-notes
     - spot (bool): Enable spot instances for the nodes. DO NOT ENABLE IN PROD!
   DESC
 }

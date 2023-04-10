@@ -179,7 +179,7 @@ resource "google_container_node_pool" "custom_node_pool" {
   name    = each.value.name
   cluster = google_container_cluster.gke.id
 
-  initial_node_count = each.value.initial_node_count
+  initial_node_count = each.value.node_count
 
   management {
     auto_upgrade = false
