@@ -12,11 +12,13 @@ variable "gke_version" {
 }
 
 variable "region" {
+  type       = string
   default     = "us-central1"
   description = "region to deploy the cluster in"
 }
 
 variable "project_id" {
+  type       = string
   description = "project id to deploy the cluster in"
 }
 
