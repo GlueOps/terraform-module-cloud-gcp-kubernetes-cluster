@@ -180,7 +180,7 @@ resource "google_container_cluster" "gke" {
   name = "gke"
 
   location                    = var.zonal == true ? "${var.region}-a" : var.region
-  min_master_version          = "1.24.9-gke.3200"
+  min_master_version          = "1.24.10-gke.2300"
   remove_default_node_pool    = true
   initial_node_count          = 1
   enable_intranode_visibility = true
