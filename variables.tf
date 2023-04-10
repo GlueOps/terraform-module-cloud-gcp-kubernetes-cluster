@@ -7,8 +7,8 @@ variable "zonal" {
 
 variable "gke_version" {
   type        = string
-  default = "1.24.10-gke.2300"
-  description = "Static Channel GKE version to use. This applies only to the master/control plane and not the nodes. Please specify a matching version for the nodes in the node pool definition."
+  default     = "1.24.10-gke.2300"
+  description = "Static Channel GKE version to use. This applies only to the master/control plane and not the nodes. Please specify a matching version for the nodes in the node pool definition. ref: https://cloud.google.com/kubernetes-engine/docs/release-notes"
 }
 
 variable "region" {
@@ -40,14 +40,23 @@ variable "node_pools" {
     gke_version        = string
     spot               = bool
   }))
-  default = [ {
-    disk_size_gb = 20
-    disk_type = "pd-standard"
-    gke_version = "1.24.10-gke.2300"
+  default = [{
+    disk_size_gb       = 20
+    disk_type          = "pd-standard"
+    gke_version        = "1.24.10-gke.2300"
     initial_node_count = 1
-    machine_type = "e2-medium"
-    name = "default-pool"
-    spot = true
-  } ]
-  description = "A list of objects containing node pool configurations."
+    machine_type       = "e2-medium"
+    name               = "default-pool"
+    spot               = true
+  }]
+  description = <<-DESC
+  node pool configurations:
+    - disk_size_gb (number): Disk size in GB for the nodes.
+    - disk_type (string): Disk type to use for the nodes. ref: https://cloud.google.com/compute/docs/disks
+    - gke_version (string): GKE version to use for the nodes. ref: https://cloud.google.com/kubernetes-engine/docs/release-notes
+    - initial_node_count (number): number of nodes to create in the node pool.
+    - machine_type (string): Machine type to use for the nodes. ref: https://gcpinstances.doit-intl.com/
+    - name (string): Name of the node pool. MUST BE UNIQUE! Recommended to use YYYYMMDD in the name
+    - spot (bool): Enable spot instances for the nodes. DO NOT ENABLE IN PROD!
+  DESC
 }
