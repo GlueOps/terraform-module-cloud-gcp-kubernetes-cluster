@@ -175,15 +175,12 @@ resource "google_service_account" "gke_node_pool" {
 }
 
 
-locals {
-  gke_version = "1.24.9-gke.3200"
-}
 
 resource "google_container_cluster" "gke" {
   name = "gke"
 
   location                    = var.zonal == true ? "${var.region}-a" : var.region
-  min_master_version          = local.gke_version
+  min_master_version          = "1.24.9-gke.3200"
   remove_default_node_pool    = true
   initial_node_count          = 1
   enable_intranode_visibility = true
@@ -263,7 +260,7 @@ resource "google_container_node_pool" "custom_node_pool" {
     pod_range            = "kubernetes-pods"
   }
 
-  version = local.gke_version
+  version = "1.24.9-gke.3200"
 
   name    = each.value.name
   cluster = google_container_cluster.gke.id
