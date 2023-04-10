@@ -13,6 +13,12 @@ variable "zonal" {
   description = "Enable if you want this to be a zonal cluster. If true, this will be set to zone a"
 }
 
+
+variable "gke_version" {
+  type        = string
+  description = "Static Channel GKE version to use. This applies only to the master/control plane and not the nodes. Please specify a matching version for the nodes in the node pool definition."
+}
+
 variable "region" {
   default     = "us-central1"
   description = "region to deploy the cluster in"
@@ -255,12 +261,12 @@ resource "google_container_cluster" "gke" {
 resource "google_container_node_pool" "custom_node_pool" {
   for_each = { for np in var.node_pools : np.name => np }
 
-    network_config {
+  network_config {
     enable_private_nodes = false
     pod_range            = "kubernetes-pods"
   }
 
-  version = "1.24.9-gke.3200"
+  version = each.value.gke_version
 
   name    = each.value.name
   cluster = google_container_cluster.gke.id
@@ -292,6 +298,7 @@ variable "node_pools" {
     disk_size_gb       = number
     auto_upgrade       = bool
     auto_repair        = bool
+    gke_version        = string
   }))
   description = "A list of objects containing node pool configurations."
 }
