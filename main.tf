@@ -10,7 +10,7 @@ terraform {
 // bool variable with true as default
 variable "zonal" {
   type        = bool
-  description = "Enable if you want this to be a zonal cluster. If true, this will be set to zone a"
+  description = "Enable if you want this to be a zonal cluster. If true, this will be set to zone a for the region specified."
 }
 
 
@@ -38,27 +38,10 @@ variable "network_ranges" {
   description = "CIDR ranges to use for the cluster deployment."
 }
 
-variable "gke_initial_node_pool_node_count" {
-  type        = number
-  default     = 1
-  description = "Initial node count for the Kubernetes node pool. If zonal is true this is multipled by 3"
-}
-
-variable "node_config" {
-  type = map(string)
-  default = {
-    machine_type = "c2-standard-4"
-    disk_type    = "pd-ssd"
-    disk_size_gb = "20"
-  }
-  description = "Configuration for GKE nodes."
-}
-
 provider "google" {
   project = var.project_id
   region  = var.region
 }
-
 
 
 
@@ -186,7 +169,7 @@ resource "google_container_cluster" "gke" {
   name = "gke"
 
   location                    = var.zonal == true ? "${var.region}-a" : var.region
-  min_master_version          = "1.24.10-gke.2300"
+  min_master_version          = var.gke_version
   remove_default_node_pool    = true
   initial_node_count          = 1
   enable_intranode_visibility = true
@@ -226,38 +209,6 @@ resource "google_container_cluster" "gke" {
 }
 
 
-
-
-
-
-
-
-# resource "google_container_node_pool" "primary" {
-#   name = "primary-node-pool"
-
-#   cluster = google_container_cluster.gke.id
-#   network_config {
-#     enable_private_nodes = false
-#     pod_range            = "kubernetes-pods"
-#   }
-
-#   initial_node_count = var.zonal == true ? var.gke_initial_node_pool_node_count * 3 : var.gke_initial_node_pool_node_count
-
-#   management {
-#     auto_upgrade = false
-#     auto_repair  = true
-#   }
-
-#   node_config {
-#     spot            = var.zonal == true ? true : false
-#     machine_type    = var.node_config.machine_type
-#     disk_type       = var.node_config.disk_type
-#     disk_size_gb    = var.node_config.disk_size_gb
-#     service_account = google_service_account.gke_node_pool.email
-#   }
-# }
-
-
 resource "google_container_node_pool" "custom_node_pool" {
   for_each = { for np in var.node_pools : np.name => np }
 
@@ -271,15 +222,15 @@ resource "google_container_node_pool" "custom_node_pool" {
   name    = each.value.name
   cluster = google_container_cluster.gke.id
 
-  initial_node_count = var.zonal == true ? each.value.initial_node_count * 3 : each.value.initial_node_count
+  initial_node_count = each.value.initial_node_count
 
   management {
-    auto_upgrade = each.value.auto_upgrade
-    auto_repair  = each.value.auto_repair
+    auto_upgrade = false
+    auto_repair  = true
   }
 
   node_config {
-    spot         = var.zonal == true ? true : false
+    spot         = each.value.spot
     machine_type = each.value.machine_type
     disk_type    = each.value.disk_type
     disk_size_gb = each.value.disk_size_gb
@@ -296,9 +247,8 @@ variable "node_pools" {
     machine_type       = string
     disk_type          = string
     disk_size_gb       = number
-    auto_upgrade       = bool
-    auto_repair        = bool
     gke_version        = string
+    spot               = bool
   }))
   description = "A list of objects containing node pool configurations."
 }
