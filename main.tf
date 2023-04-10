@@ -7,43 +7,10 @@ terraform {
   }
 }
 
-// bool variable with true as default
-variable "zonal" {
-  type        = bool
-  description = "Enable if you want this to be a zonal cluster. If true, this will be set to zone a for the region specified."
-}
-
-
-variable "gke_version" {
-  type        = string
-  description = "Static Channel GKE version to use. This applies only to the master/control plane and not the nodes. Please specify a matching version for the nodes in the node pool definition."
-}
-
-variable "region" {
-  default     = "us-central1"
-  description = "region to deploy the cluster in"
-}
-
-variable "project_id" {
-  description = "project id to deploy the cluster in"
-}
-
-variable "network_ranges" {
-  type = map(string)
-  default = {
-    kubernetes_pods     = "10.65.0.0/16"
-    kubernetes_services = "10.64.224.0/20"
-    kubernetes_nodes    = "10.64.64.0/23"
-  }
-  description = "CIDR ranges to use for the cluster deployment."
-}
-
 provider "google" {
   project = var.project_id
   region  = var.region
 }
-
-
 
 resource "google_project_service" "activate_apis" {
   for_each = toset([
@@ -78,7 +45,6 @@ resource "google_project_service" "activate_apis" {
   disable_dependent_services = false
 }
 
-
 resource "google_compute_network" "vpc_network" {
   name                            = "glueops-vpc"
   auto_create_subnetworks         = false
@@ -89,7 +55,6 @@ resource "google_compute_network" "vpc_network" {
   ]
 }
 
-
 resource "google_compute_router" "router" {
   name    = "router"
   region  = var.region
@@ -99,8 +64,6 @@ resource "google_compute_router" "router" {
     asn = 64514
   }
 }
-
-
 
 resource "google_compute_route" "default" {
   name             = "internet-route"
@@ -137,8 +100,6 @@ resource "google_compute_subnetwork" "kubernetes" {
   }
 }
 
-
-
 data "google_project" "project" {
 }
 
@@ -162,8 +123,6 @@ resource "google_service_account" "gke_node_pool" {
     google_project_service.activate_apis,
   ]
 }
-
-
 
 resource "google_container_cluster" "gke" {
   name = "gke"
@@ -192,7 +151,6 @@ resource "google_container_cluster" "gke" {
     spot            = false
   }
 
-
   addons_config {
     horizontal_pod_autoscaling {
       disabled = false
@@ -207,7 +165,6 @@ resource "google_container_cluster" "gke" {
     ]
   }
 }
-
 
 resource "google_container_node_pool" "custom_node_pool" {
   for_each = { for np in var.node_pools : np.name => np }
@@ -240,16 +197,5 @@ resource "google_container_node_pool" "custom_node_pool" {
   }
 }
 
-variable "node_pools" {
-  type = list(object({
-    name               = string
-    initial_node_count = number
-    machine_type       = string
-    disk_type          = string
-    disk_size_gb       = number
-    gke_version        = string
-    spot               = bool
-  }))
-  description = "A list of objects containing node pool configurations."
-}
+
 
