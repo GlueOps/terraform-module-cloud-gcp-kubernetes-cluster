@@ -47,7 +47,7 @@ variable "node_pools" {
     initial_node_count = 1
     machine_type       = "e2-medium"
     name               = "default-pool"
-    spot               = true
+    spot               = false
   }]
   description = <<-DESC
   node pool configurations:
