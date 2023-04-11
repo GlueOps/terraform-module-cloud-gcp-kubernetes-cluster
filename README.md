@@ -9,7 +9,7 @@ This terraform module is to help you quickly deploy a GKE cluster on Google Clou
 - Service account with environment variable set
 - Service Quotas (Depending on Cluster Size)
 
-For more details see [Wiki](https://github.com/GlueOps/terraform-module-cloud-gcp-kubernetes-cluster/wiki/)
+For more details see: https://github.com/GlueOps/terraform-module-cloud-gcp-kubernetes-cluster/wiki/
 
 ### Example Usage of module
 
