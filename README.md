@@ -6,7 +6,8 @@ This Terraform module deploys everything needed in GCP to get a kubernetes clust
 ## Prerequisites
 
 - GCP Project
-- Service account with environment variable set.
+- Service account with environment variable set
+- Service Quotas (Depending on Cluster Size)
 
 For more details see: https://github.com/GlueOps/terraform-module-cloud-gcp-kubernetes-cluster/wiki/FAQ
 
