@@ -13,21 +13,35 @@ For more details see: https://github.com/GlueOps/terraform-module-cloud-gcp-kube
 
 ## Terraform Deployment
 
-### Configuration
-
-Create a `captain_configuration.tfvars` configuration file to deploy Kubernetes.  
-A reasonable xample configuration for this module, be sure to update `project_id`, required, and `region`, if desired.  The region should be the same as the region for which the quota increase was requested above:
+### Example Usage of module
 
 ```hcl
-kubernetes_cluster_configurations = {
+module "captain" {
+  source = "git::https://github.com/GlueOps/terraform-module-cloud-gcp-kubernetes-cluster.git?ref=feat/multiple-node-pools"
   network_ranges = {
     "kubernetes_pods" : "10.65.0.0/16",
     "kubernetes_services" : "10.64.224.0/20",
     "kubernetes_nodes" : "10.64.64.0/23"
   }
-  project_id = "<unique-project-id>"
+  project_id = "test-30-np"
   region     = "us-central1"
-  zonal = true
+  zonal      = true
+
+  node_pools = [
+    {
+      name               = "default-nodes-second"
+      initial_node_count = 1
+      machine_type       = "c2-standard-4"
+      disk_type          = "pd-standard"
+      disk_size_gb       = 30
+      auto_upgrade       = false
+      auto_repair        = true
+      gke_version        = "1.24.10-gke.2300"
+      node_count         = 3
+      spot               = true
+    }
+  ]
+  gke_version = "1.24.10-gke.2300"
 }
 ```
 
@@ -35,8 +49,8 @@ kubernetes_cluster_configurations = {
 To deploy Kubernetes, run the following commands from the root directory of created for this deployment:
 
 ```bash
-terraform -chdir=admiral/kubernetes-cluster/gcp init
-terraform -chdir=admiral/kubernetes-cluster/gcp apply -state=$(pwd)/terraform_states/kubernetes-cluster.terraform.tfstate -var-file=$(pwd)/captain_configuration.tfvars
+terraform -chdir=admiral/kubernetes-cluster init
+terraform -chdir=admiral/kubernetes-cluster apply -state=$(pwd)/terraform_states/kubernetes-cluster.terraform.tfstate
 ```
 
 ## Requirements
