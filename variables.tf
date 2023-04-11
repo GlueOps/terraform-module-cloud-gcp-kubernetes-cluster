@@ -1,7 +1,7 @@
 
 variable "zonal" {
   type        = bool
-  description = "Enable if you want this to be a zonal cluster. If true, this will be set to zone a for the region specified."
+  description = "Enable if you want this to be a zonal cluster. If true, this will be set to zone `a` for the region specified."
 }
 
 
