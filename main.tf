@@ -7,54 +7,10 @@ terraform {
   }
 }
 
-// bool variable with true as default
-variable "zonal" {
-  type        = bool
-  description = "Enable if you want this to be a zonal cluster. If true, this will be set to zone a"
-}
-
-variable "region" {
-  default     = "us-central1"
-  description = "region to deploy the cluster in"
-}
-
-variable "project_id" {
-  description = "project id to deploy the cluster in"
-}
-
-variable "network_ranges" {
-  type = map(string)
-  default = {
-    kubernetes_pods     = "10.65.0.0/16"
-    kubernetes_services = "10.64.224.0/20"
-    kubernetes_nodes    = "10.64.64.0/23"
-  }
-  description = "CIDR ranges to use for the cluster deployment."
-}
-
-variable "gke_initial_node_pool_node_count" {
-  type        = number
-  default     = 1
-  description = "Initial node count for the Kubernetes node pool. If zonal is true this is multipled by 3"
-}
-
-variable "node_config" {
-  type = map(string)
-  default = {
-    machine_type = "c2-standard-4"
-    disk_type    = "pd-ssd"
-    disk_size_gb = "20"
-  }
-  description = "Configuration for GKE nodes."
-}
-
 provider "google" {
   project = var.project_id
   region  = var.region
 }
-
-
-
 
 resource "google_project_service" "activate_apis" {
   for_each = toset([
@@ -89,7 +45,6 @@ resource "google_project_service" "activate_apis" {
   disable_dependent_services = false
 }
 
-
 resource "google_compute_network" "vpc_network" {
   name                            = "glueops-vpc"
   auto_create_subnetworks         = false
@@ -100,7 +55,6 @@ resource "google_compute_network" "vpc_network" {
   ]
 }
 
-
 resource "google_compute_router" "router" {
   name    = "router"
   region  = var.region
@@ -110,8 +64,6 @@ resource "google_compute_router" "router" {
     asn = 64514
   }
 }
-
-
 
 resource "google_compute_route" "default" {
   name             = "internet-route"
@@ -148,8 +100,6 @@ resource "google_compute_subnetwork" "kubernetes" {
   }
 }
 
-
-
 data "google_project" "project" {
 }
 
@@ -178,7 +128,7 @@ resource "google_container_cluster" "gke" {
   name = "gke"
 
   location                    = var.zonal == true ? "${var.region}-a" : var.region
-  min_master_version          = "1.24.9-gke.3200"
+  min_master_version          = var.gke_version
   remove_default_node_pool    = true
   initial_node_count          = 1
   enable_intranode_visibility = true
@@ -201,7 +151,6 @@ resource "google_container_cluster" "gke" {
     spot            = false
   }
 
-
   addons_config {
     horizontal_pod_autoscaling {
       disabled = false
@@ -217,23 +166,20 @@ resource "google_container_cluster" "gke" {
   }
 }
 
+resource "google_container_node_pool" "custom_node_pool" {
+  for_each = { for np in var.node_pools : np.name => np }
 
-
-
-
-
-
-
-resource "google_container_node_pool" "primary" {
-  name = "primary-node-pool"
-
-  cluster = google_container_cluster.gke.id
   network_config {
     enable_private_nodes = false
     pod_range            = "kubernetes-pods"
   }
 
-  initial_node_count = var.zonal == true ? var.gke_initial_node_pool_node_count * 3 : var.gke_initial_node_pool_node_count
+  version = each.value.gke_version
+
+  name    = each.value.name
+  cluster = google_container_cluster.gke.id
+
+  initial_node_count = each.value.node_count
 
   management {
     auto_upgrade = false
@@ -241,10 +187,15 @@ resource "google_container_node_pool" "primary" {
   }
 
   node_config {
-    spot            = var.zonal == true ? true : false
-    machine_type    = var.node_config.machine_type
-    disk_type       = var.node_config.disk_type
-    disk_size_gb    = var.node_config.disk_size_gb
+    spot         = each.value.spot
+    machine_type = each.value.machine_type
+    disk_type    = each.value.disk_type
+    disk_size_gb = each.value.disk_size_gb
+
+    # If you still need the service account, add it as an input variable for the module
     service_account = google_service_account.gke_node_pool.email
   }
 }
+
+
+
