@@ -1,17 +1,15 @@
 <!-- BEGIN_TF_DOCS -->
 # terraform-module-cloud-gcp-kubernetes-cluster
 
-This Terraform module deploys everything needed in GCP to get a kubernetes cluster up and running. This repo should be used in the context of deploying with the [admiral](https://github.com/glueops/admiral) repository.
+This terraform module is to help you quickly deploy a GKE cluster on Google Cloud Platform. This is part of the opionated GlueOps Platform. If you came here directly then you should probably visit https://github.com/glueops/admiral as that is the start point.
 
-## Prerequisites
+## Prerequisites to use this Terraform module
 
 - GCP Project
 - Service account with environment variable set
 - Service Quotas (Depending on Cluster Size)
 
 For more details see: https://github.com/GlueOps/terraform-module-cloud-gcp-kubernetes-cluster/wiki/FAQ
-
-## Terraform Deployment
 
 ### Example Usage of module
 
@@ -43,14 +41,6 @@ module "captain" {
   ]
   gke_version = "1.24.10-gke.2300"
 }
-```
-
-### Deployment
-To deploy Kubernetes, run the following commands from the root directory of created for this deployment:
-
-```bash
-terraform -chdir=admiral/kubernetes-cluster init
-terraform -chdir=admiral/kubernetes-cluster apply -state=$(pwd)/terraform_states/kubernetes-cluster.terraform.tfstate
 ```
 
 ## Requirements
