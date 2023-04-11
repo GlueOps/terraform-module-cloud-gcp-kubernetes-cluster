@@ -15,7 +15,7 @@ For more details see: https://github.com/GlueOps/terraform-module-cloud-gcp-kube
 
 ```hcl
 module "captain" {
-  source = "git::https://github.com/GlueOps/terraform-module-cloud-gcp-kubernetes-cluster.git?ref=feat/multiple-node-pools"
+  source = "git::https://github.com/GlueOps/terraform-module-cloud-gcp-kubernetes-cluster.git"
   network_ranges = {
     "kubernetes_pods" : "10.65.0.0/16",
     "kubernetes_services" : "10.64.224.0/20",
