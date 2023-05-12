@@ -42,7 +42,7 @@ resource "google_project_service" "activate_apis" {
     update = "40m"
   }
 
-  disable_dependent_services = false
+  disable_dependent_services = true
 }
 
 resource "google_compute_network" "vpc_network" {
