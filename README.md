@@ -33,12 +33,12 @@ module "captain" {
       disk_size_gb       = 30
       auto_upgrade       = false
       auto_repair        = true
-      gke_version        = "1.26.5-gke.1200"
+      gke_version        = "1.26.4-gke.1400"
       node_count         = 3
       spot               = true
     }
   ]
-  gke_version = "1.26.5-gke.1200"
+  gke_version = "1.26.4-gke.1400"
 }
 ```
 
