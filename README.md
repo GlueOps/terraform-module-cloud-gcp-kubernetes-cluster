@@ -23,7 +23,7 @@ module "captain" {
   }
   project_id = "antoniostacos-nonprod"
   region     = "us-central1"
-  zonal      = true
+  zonal      = false
 
   node_pools = [
     {
@@ -35,7 +35,7 @@ module "captain" {
       auto_repair        = true
       gke_version        = "1.26.4-gke.1400"
       node_count         = 3
-      spot               = true
+      spot               = false
     }
   ]
   gke_version = "1.26.4-gke.1400"
