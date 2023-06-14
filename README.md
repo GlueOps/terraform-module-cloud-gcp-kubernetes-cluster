@@ -34,7 +34,7 @@ module "captain" {
       auto_upgrade       = false
       auto_repair        = true
       gke_version        = "1.26.4-gke.1400"
-      node_count         = 1
+      node_count         = 3
       spot               = false
     }
   ]
