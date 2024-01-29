@@ -158,6 +158,9 @@ resource "google_container_cluster" "captain" {
     managed_prometheus {
       enabled = false
     }
+    advanced_datapath_observability_config {
+      enable_metrics = false
+    }
   }
 
   addons_config {
@@ -219,6 +222,7 @@ resource "google_container_node_pool" "custom_pools" {
 
   node_config {
     spot         = each.value.spot
+    preemptible = each.value.preemptible
     machine_type = each.value.machine_type
     disk_type    = each.value.disk_type
     disk_size_gb = each.value.disk_size_gb

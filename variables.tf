@@ -49,6 +49,7 @@ variable "node_pools" {
     disk_size_gb      = number
     gke_version       = string
     spot              = bool
+    preemptible       = bool
     kubernetes_labels = map(string)
     kubernetes_taints = list(object({
       key    = string
@@ -65,6 +66,7 @@ variable "node_pools" {
     machine_type      = "e2-medium"
     name              = "default-pool"
     spot              = false
+    preemptible       = false
     kubernetes_labels = {}
     kubernetes_taints = []
     node_pool_zones   = ["a"]
