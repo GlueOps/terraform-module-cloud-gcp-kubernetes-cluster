@@ -32,24 +32,42 @@ variable "network_ranges" {
   description = "CIDR ranges to use for the cluster deployment."
 }
 
+
+variable "cluster_supported_node_pool_zones" {
+  type    = list(string)
+  default = ["a", "b", "c"]
+}
+
+
+# https://stackoverflow.com/questions/65431896/is-it-possible-to-create-a-zone-only-node-pool-in-a-regional-cluster-in-gke/65441255#65441255
 variable "node_pools" {
   type = list(object({
-    name         = string
-    node_count   = number
-    machine_type = string
-    disk_type    = string
-    disk_size_gb = number
-    gke_version  = string
-    spot         = bool
+    name              = string
+    node_count        = number
+    machine_type      = string
+    disk_type         = string
+    disk_size_gb      = number
+    gke_version       = string
+    spot              = bool
+    kubernetes_labels = map(string)
+    kubernetes_taints = list(object({
+      key    = string
+      value  = string
+      effect = string
+    }))
+    node_pool_zones = list(string)
   }))
   default = [{
-    disk_size_gb = 20
-    disk_type    = "pd-standard"
-    gke_version  = "1.27.2-gke.1200"
-    node_count   = 1
-    machine_type = "e2-medium"
-    name         = "default-pool"
-    spot         = false
+    disk_size_gb      = 20
+    disk_type         = "pd-standard"
+    gke_version       = "1.27.2-gke.1200"
+    node_count        = 1
+    machine_type      = "e2-medium"
+    name              = "default-pool"
+    spot              = false
+    kubernetes_labels = {}
+    kubernetes_taints = []
+    node_pool_zones   = ["a"]
   }]
   description = <<-DESC
   node pool configurations:
