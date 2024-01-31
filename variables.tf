@@ -82,3 +82,43 @@ variable "node_pools" {
     - spot (bool): Enable spot instances for the nodes. DO NOT ENABLE IN PROD!
   DESC
 }
+
+variable "network_peering_configurations" {
+  description = <<EOF
+  A list of network peering configurations. Each configuration is an object with the following attributes:
+  - 'peer_network': The self-link of the peer network for the peering (e.g., 'projects/[PROJECT_ID]/global/networks/[NETWORK_NAME]').
+  - 'peering_name': A unique name for the peering connection.
+  - 'export_custom_routes': A boolean indicating whether custom routes will be exported from the network (default: false).
+  - 'export_subnet_routes_with_public_ip': A boolean indicating whether subnet routes with public IP will be exported (default: false).
+  - 'import_custom_routes': A boolean indicating whether custom routes will be imported from the peer network (default: false).
+  
+  This variable enables the dynamic creation and management of multiple network peerings.
+  The default is an empty list, indicating no peerings will be established if not specified.
+
+  Example:
+    [
+      {
+        peer_network = "projects/example-project/global/networks/example-network-1"
+        peering_name = "example-peering-1"
+        export_custom_routes = false
+        export_subnet_routes_with_public_ip = true
+        import_custom_routes = false
+      },
+      {
+        peer_network = "projects/example-project/global/networks/example-network-2"
+        peering_name = "example-peering-2"
+        export_custom_routes = true
+        export_subnet_routes_with_public_ip = false
+        import_custom_routes = true
+      }
+    ]
+  EOF
+  type = list(object({
+    peer_network                        = string
+    peering_name                        = string
+    export_custom_routes                = bool
+    export_subnet_routes_with_public_ip = bool
+    import_custom_routes                = bool
+  }))
+  default = []
+}

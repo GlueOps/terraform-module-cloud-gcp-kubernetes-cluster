@@ -45,7 +45,7 @@ resource "google_project_service" "activate_apis" {
 }
 
 resource "google_compute_network" "vpc_network" {
-  name                            = "glueops-vpc"
+  name                            = "captain"
   auto_create_subnetworks         = false
   delete_default_routes_on_create = true
   routing_mode                    = "REGIONAL"
@@ -53,6 +53,18 @@ resource "google_compute_network" "vpc_network" {
     google_project_service.activate_apis,
   ]
 }
+
+resource "google_compute_network_peering" "peering" {
+  for_each = { for peering in var.network_peering_configurations : peering.peering_name => peering }
+
+  name                                = each.value.peering_name
+  network                             = google_compute_network.vpc_network.self_link
+  peer_network                        = each.value.peer_network
+  export_custom_routes                = each.value.export_custom_routes
+  export_subnet_routes_with_public_ip = each.value.export_subnet_routes_with_public_ip
+  import_custom_routes                = each.value.import_custom_routes
+}
+
 
 resource "google_compute_router" "router" {
   name    = "router"
@@ -222,7 +234,7 @@ resource "google_container_node_pool" "custom_pools" {
 
   node_config {
     spot         = each.value.spot
-    preemptible = each.value.preemptible
+    preemptible  = each.value.preemptible
     machine_type = each.value.machine_type
     disk_type    = each.value.disk_type
     disk_size_gb = each.value.disk_size_gb
