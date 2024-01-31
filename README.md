@@ -61,7 +61,7 @@ module "captain" {
   network_peering_configurations = [
 #    {
 #    peer_network                        = "projects/example-project/global/networks/example-network-2"
-#    peering_name                        = "example-peerssing-1"
+#    peering_name                        = "peeering-networkA-to-networkB"
 #    export_custom_routes                = false
 #    export_subnet_routes_with_public_ip = true
 #    import_custom_routes                = false
