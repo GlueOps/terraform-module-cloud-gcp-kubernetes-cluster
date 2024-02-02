@@ -1,3 +1,20 @@
+locals {
+  flattened_cidrs = flatten([
+    for service in var.private_connection_to_services : [
+      for cidr in service.cidrs : {
+        name    = cidr.name
+        cidr    = cidr.cidr
+        service = service.service
+      }
+    ]
+  ])
+
+  service_to_cidrs = {
+    for service in var.private_connection_to_services :
+    service.service => [for conn in local.flattened_cidrs : conn.name if conn.service == service.service]
+  }
+}
+
 resource "google_compute_global_address" "gcp_managed_services" {
   for_each = { for conn in local.flattened_cidrs : "${conn.name}-${conn.service}" => conn }
 
@@ -10,26 +27,12 @@ resource "google_compute_global_address" "gcp_managed_services" {
 }
 
 resource "google_service_networking_connection" "private_connection" {
-  network = google_compute_network.vpc_network.id
-  service = "servicenetworking.googleapis.com"
+  for_each = local.service_to_cidrs
 
-  reserved_peering_ranges = [for conn in local.flattened_cidrs : google_compute_global_address.gcp_managed_services["${conn.name}-${conn.service}"].name]
+  network                 = google_compute_network.vpc_network.id
+  service                 = each.key
+  reserved_peering_ranges = [for name in each.value : google_compute_global_address.gcp_managed_services["${name}-${each.key}"].name]
 }
-
-
-locals {
-  flattened_cidrs = flatten([
-    for service in var.private_connection_to_services : [
-      for cidr in service.cidrs : {
-        name    = cidr.name
-        cidr    = cidr.cidr
-        service = service.service
-      }
-    ]
-  ])
-}
-
-
 
 variable "private_connection_to_services" {
   type = list(object({
@@ -41,7 +44,7 @@ variable "private_connection_to_services" {
   }))
   default = [
     {
-      cidrs   = [{ name = "primary", cidr = "10.0.128.0/19" }, { name = "another", cidr = "10.1.128.0/19" }]
+      cidrs   = [{ name = "gcp-services-network-primary", cidr = "10.0.128.0/19" }, { name = "gcp-services-network-another", cidr = "10.1.128.0/19" }]
       service = "servicenetworking.googleapis.com"
     }
   ]
