@@ -22,7 +22,7 @@ variable "project_id" {
   description = "project id to deploy the cluster in"
 }
 
-variable "network_ranges" {
+variable "kubernetes_network_ranges" {
   type = map(string)
   default = {
     kubernetes_pods     = "10.65.0.0/16"
@@ -31,6 +31,9 @@ variable "network_ranges" {
   }
   description = "CIDR ranges to use for the cluster deployment."
 }
+
+
+
 
 
 variable "cluster_supported_node_pool_zones" {
