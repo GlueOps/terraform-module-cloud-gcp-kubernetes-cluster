@@ -54,7 +54,7 @@ module "captain" {
       ]
     },
     {
-      name         = "glueops-platform-node-pool-argocd-app-controller-1"
+      name         = "glueops-node-pool-argocd-app-ctrl-1"
       machine_type = "c2-standard-4"
       disk_type    = "pd-standard"
       disk_size_gb = 30
