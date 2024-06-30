@@ -54,6 +54,29 @@ module "captain" {
       ]
     },
     {
+      name         = "glueops-platform-node-pool-argocd-app-controller-1"
+      machine_type = "c2-standard-4"
+      disk_type    = "pd-standard"
+      disk_size_gb = 30
+      auto_upgrade = false
+      auto_repair  = true
+      gke_version  = "1.28.10-gke.1148000"
+      node_count   = 2
+      spot         = false
+      preemptible  = false
+      node_pool_zones = ["a","b"]
+      kubernetes_labels = {
+        "glueops.dev/role" : "glueops-platform-argocd-app-controller"
+      }
+      kubernetes_taints = [
+        {
+          key    = "glueops.dev/role"
+          value  = "glueops-platform-argocd-app-controller"
+          effect = "NO_SCHEDULE"
+        }
+      ]
+    },
+    {
       name         = "clusterwide-node-pool-1"
       machine_type = "c2-standard-4"
       disk_type    = "pd-standard"
