@@ -27,7 +27,7 @@ resource "google_container_cluster" "captain" {
   node_locations = local.node_locations
 
   release_channel {
-    channel = "STABLE"
+    channel = "UNSPECIFIED"
   }
 
   network    = google_compute_network.vpc_network.id
