@@ -7,7 +7,7 @@ variable "zonal" {
 
 variable "gke_version" {
   type        = string
-  default     = "1.27.2-gke.1200"
+  default     = "1.28.11-gke.1260000"
   description = "Static Channel GKE version to use. This applies only to the master/control plane and not the nodes. Please specify a matching version for the nodes in the node pool definition. ref: https://cloud.google.com/kubernetes-engine/docs/release-notes"
 }
 
@@ -64,7 +64,7 @@ variable "node_pools" {
   default = [{
     disk_size_gb      = 20
     disk_type         = "pd-standard"
-    gke_version       = "1.27.2-gke.1200"
+    gke_version       = "1.28.11-gke.1260000"
     node_count        = 1
     machine_type      = "e2-medium"
     name              = "default-pool"
