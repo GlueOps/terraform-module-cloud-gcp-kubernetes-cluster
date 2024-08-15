@@ -7,7 +7,7 @@ variable "zonal" {
 
 variable "gke_version" {
   type        = string
-  default     = "1.27.2-gke.1200"
+  default     = "1.28.11-gke.1260000"
   description = "Static Channel GKE version to use. This applies only to the master/control plane and not the nodes. Please specify a matching version for the nodes in the node pool definition. ref: https://cloud.google.com/kubernetes-engine/docs/release-notes"
 }
 
