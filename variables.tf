@@ -64,7 +64,7 @@ variable "node_pools" {
   default = [{
     disk_size_gb      = 20
     disk_type         = "pd-standard"
-    gke_version       = "1.27.2-gke.1200"
+    gke_version       = "1.28.11-gke.1260000"
     node_count        = 1
     machine_type      = "e2-medium"
     name              = "default-pool"
