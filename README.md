@@ -37,7 +37,7 @@ module "captain" {
       disk_size_gb = 30
       auto_upgrade = false
       auto_repair  = true
-      gke_version  = "1.28.11-gke.1260000"
+      gke_version  = "1.28.12-gke.1179000"
       node_count   = 2
       spot         = false
       preemptible  = false
@@ -60,7 +60,7 @@ module "captain" {
       disk_size_gb = 30
       auto_upgrade = false
       auto_repair  = true
-      gke_version  = "1.28.11-gke.1260000"
+      gke_version  = "1.28.12-gke.1179000"
       node_count   = 2
       spot         = false
       preemptible  = false
@@ -83,7 +83,7 @@ module "captain" {
       disk_size_gb = 30
       auto_upgrade = false
       auto_repair  = true
-      gke_version  = "1.28.11-gke.1260000"
+      gke_version  = "1.28.12-gke.1179000"
       node_count   = 2
       spot         = false
       preemptible  = false
@@ -92,7 +92,7 @@ module "captain" {
       kubernetes_taints = []
     },
   ]
-  gke_version = "1.28.11-gke.1260000"
+  gke_version = "1.28.12-gke.1179000"
   network_peering_configurations = [
 #    {
 #    peer_network                        = "projects/example-project/global/networks/example-network-2"
