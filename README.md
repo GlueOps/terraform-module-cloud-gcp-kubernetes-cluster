@@ -92,7 +92,7 @@ module "captain" {
       kubernetes_taints = []
     },
   ]
-  gke_version = "1.28.11-gke.1172000"
+  gke_version = "1.28.11-gke.1260000"
   network_peering_configurations = [
 #    {
 #    peer_network                        = "projects/example-project/global/networks/example-network-2"
